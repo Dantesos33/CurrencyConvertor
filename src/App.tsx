@@ -1,21 +1,21 @@
 import { useState, useEffect } from 'react';
-import InputBox from './components/InputBox';
-import useCurrency from './hooks/useCurrency';
-import { ThemeProvider } from './context/theme.js'
+import InputBox from './components/InputBox.tsx';
+import useCurrency from './hooks/useCurrency.ts';
+import { ThemeProvider } from './context/theme.ts'
 
 function App() {
-  const [fromAmount, setFromAmount] = useState(0);
-  const [isFromOpen, setIsFromOpen] = useState(false);
-  const [fromCurrency, setFromCurrency] = useState("usd");
+  const [fromAmount, setFromAmount] = useState<number>(0);
+  const [isFromOpen, setIsFromOpen] = useState<boolean>(false);
+  const [fromCurrency, setFromCurrency] = useState<string>("usd");
 
-  const [toAmount, setToAmount] = useState(0);
-  const [isToOpen, setIsToOpen] = useState(false);
-  const [toCurrency, setToCurrency] = useState("pkr");
+  const [toAmount, setToAmount] = useState<number>(0);
+  const [isToOpen, setIsToOpen] = useState<boolean>(false);
+  const [toCurrency, setToCurrency] = useState<string>("pkr");
 
-  const currencyData = useCurrency(fromCurrency);
-  const currencies = Object.keys(currencyData);
+  const currencyData: Record<string, number> = useCurrency(fromCurrency);
+  const currencies: string[] = Object.keys(currencyData);
 
-  const [theme, setTheme] = useState("dark");
+  const [theme, setTheme] = useState<string>("dark");
 
   const toggleTheme = () => {
     setTheme((prevTheme) => (prevTheme === "light" ? "dark" : "light"));
@@ -97,14 +97,14 @@ function App() {
           <button 
             type="submit" 
             className="cursor-pointer w-full h-12 mt-2 bg-linear-to-r from-emerald-600 to-cyan-600 text-zinc-50 font-bold rounded-xl tracking-wide shadow-md hover:brightness-105 active:scale-[0.99] transition duration-150 dark:from-emerald-500 dark:to-cyan-500 dark:text-slate-950 dark:hover:brightness-110 dark:shadow-lg"
-            onClick={(e) => {
+            onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
               e.preventDefault();
               const rate = currencyData[toCurrency] || 0;
-              const convertedAmount = Number(fromAmount * rate).toFixed(2);
+              const convertedAmount = Number((fromAmount * rate).toFixed(2));
               setToAmount(convertedAmount);
             }}
           >
-            Convert {fromAmount} {fromCurrency.toUpperCase()} to {toCurrency.toUpperCase()}
+            Convert {fromCurrency.toUpperCase()} to {toCurrency.toUpperCase()}
           </button>
         </form>
       </div>

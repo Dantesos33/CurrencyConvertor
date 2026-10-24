@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, ChangeEvent } from "react";
 
 const InputBox = ({
     label,
@@ -12,13 +12,25 @@ const InputBox = ({
     isDropdownOpen,
     setIsDropdownOpen,
     name = "currency"
+}: {
+  label: string;
+  amount: number;
+  setAmount: (value: number) => void;
+  amountDisabled?: boolean;
+  amountPlaceholder?: string;
+  currencies: string[];
+  selectedCurrency: string;
+  setSelectedCurrency: (currency: string) => void;
+  isDropdownOpen: boolean;
+  setIsDropdownOpen: (isOpen: boolean) => void;
+  name?: string;
 }) => {
-  const [searchQuery, setSearchQuery] = useState("");
-  const dropdownRef = useRef(null);
+  const [searchQuery, setSearchQuery] = useState<string>("");
+  const dropdownRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
         setIsDropdownOpen(false);
       }
     };
@@ -26,7 +38,7 @@ const InputBox = ({
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [setIsDropdownOpen]);
 
-  const filteredCurrencies = currencies.filter((currency) =>
+  const filteredCurrencies:string[] = currencies.filter((currency) =>
     currency.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
@@ -41,7 +53,7 @@ const InputBox = ({
           type="number"
           placeholder={amountPlaceholder}
           value={amount}
-          onChange={(e) => setAmount(e.target.value)} 
+          onChange={(e: ChangeEvent<HTMLInputElement>) => setAmount((e.target.value as unknown) as number)} 
           disabled={amountDisabled}
           required
         />
