@@ -2,8 +2,6 @@
 
 A currency converter built with **React** and **TypeScript**. It fetches exchange rates from an API, converts between currencies, and supports a light and dark theme.
 
-**Live demo:** <add-your-deployed-url>
-
 ## Features
 
 - Convert an amount from one currency to another
